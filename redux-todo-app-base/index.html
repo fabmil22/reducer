@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-framework="javascript">
+	<head>
+		<meta charset="utf-8">
+		<title>Redux VanillaJS • TodoMVC</title>
+		<link rel="stylesheet" href="assets/css/base.css">
+		<link rel="stylesheet" href="assets/css/todomvc.css">
+	</head>
+	<body>
+		<section class="todoapp">
+			<header class="header">
+				<h1>todos</h1>
+				<form action="" id="form">
+					<input class="new-todo" id="new-todo" name="text" placeholder="What needs to be done?" autofocus>
+				</form>
+				
+			</header>
+			
+			<section class="main">
+				
+				<input class="toggle-all" type="checkbox">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul id="todo-list" class="todo-list"></ul>
+			</section>
+			<footer class="footer">
+				<span class="todo-count"></span>
+				<ul class="filters">
+					<li>
+						<a href="#/" class="selected">All</a>
+					</li>
+					<li>
+						<a href="#/active">Active</a>
+					</li>
+					<li>
+						<a href="#/completed">Completed</a>
+					</li>
+					<li><button class="button1" id="delete">Borrar</button></li>
+				</ul>
+				<button class="clear-completed">Clear completed</button>
+				
+			</footer>
+		</section>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.min.js"></script>
+		<script src="assets/js/app.js"></script>
+		
+	</body>
+</html>
