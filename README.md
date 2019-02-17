@@ -1,0 +1,2 @@
+# reducer
+practica con reducer
