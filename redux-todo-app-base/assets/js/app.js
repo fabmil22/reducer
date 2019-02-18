@@ -1,6 +1,6 @@
 (function () {
 //con esta funcion creamos nuestro store
-  const { createStore} = Redux; 
+  const { createStore, combineReducers} = Redux; 
   let store;
 
   const todos = [
@@ -51,43 +51,48 @@
     initApp();
    });
 
-  const reducer = ( state , action) => {
+
+   const reducerFilter = ( state = '' , action) => {
     switch (action.type) {
-      case 'ADD_TASK':
-        return {
-          ...state,
-          todos: [...state.todos , action.payload ]
-        }
-        break;
-      case 'DELETE_TASK':
-      const id = action.payload.id;
-     
-        return  {
-          ...state,
-          todos:state.filter(
-            item => { return item.id !== id}
-          )
-        } 
-        break;
       case 'FILTER_TASK':
       const filters = action.payload.filters;
-      return {
-        ...state,
-        filters
-      } 
-
-        break;  
+      return filters
+       
+          break;  
       default:
         return state;
-        break;
+      
+    }
+
+  }
+  const reducerTodos = ( state = [], action) => {
+    switch (action.type) {
+      case 'ADD_TASK':
+        return  [...state , action.payload ]
+            break;
+      case 'DELETE_TASK':
+      const id = action.payload.id;
+      return  state.filter(
+            item => { return item.id !== id}
+          )
+            break;  
+      default:
+        return state;
+            break;
     }
 
   }
 
+
+const rootReducer = combineReducers( {
+  todos  : reducerTodos,
+  filters: reducerFilter,
+});
+
   function initApp(){
 //iniciando el estado
 store = createStore(
-  reducer,
+  rootReducer,
   initialState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
@@ -104,13 +109,13 @@ $form.addEventListener('submit' , (event) => {
     });
 
     const actionfilter = changeFilter({
-      filters: 'Activa',
+      filters: 'ALL',
     });
 /*   const action = actionDelete({
         id: 1,
       }); */
   store.dispatch(action);
-  store.dispatch(actionfilter);
+  //store.dispatch(actionfilter);
   $input = document.getElementById('new-todo');
   $input.value = '';
 })
@@ -127,12 +132,13 @@ render();
 
 function render(){
   const state = store.getState();
+  console.log('ver -->',state);
   let todos = state.todos;
   const filters = state.filters;
   console.log(filters);
   
-  if( filters === 'Activa' ){
-    todos = todos.filter(todo => todo.completed === false);
+  if( filters === 'ALL' ){
+    todos = todos.filter(todo => todo.completed === true);
   }
   renderTodos(todos)
 }
