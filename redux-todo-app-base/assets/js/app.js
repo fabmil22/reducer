@@ -23,7 +23,7 @@
 
  const initialState = {
     todos,
-    filter: 'ALL',
+    filters: 'ALL',
   }
  /*fubciones puras */ 
   const actionAdd = (payload) => {
@@ -39,6 +39,13 @@
     }
   }
 
+
+  const changeFilter = (payload) => {
+    return{
+      type : 'FILTER_TASK',
+      payload
+    }
+  }
   /**cierre de funciones puras */
   document.addEventListener("DOMContentLoaded", function(event) {
     initApp();
@@ -62,7 +69,13 @@
           )
         } 
         break;
-      case 'EDIT_TASK':
+      case 'FILTER_TASK':
+      const filters = action.payload.filters;
+      return {
+        ...state,
+        filters
+      } 
+
         break;  
       default:
         return state;
@@ -89,16 +102,21 @@ $form.addEventListener('submit' , (event) => {
       completed: true,
       text:data.get('text')
     });
+
+    const actionfilter = changeFilter({
+      filters: 'Activa',
+    });
 /*   const action = actionDelete({
         id: 1,
       }); */
   store.dispatch(action);
-
+  store.dispatch(actionfilter);
   $input = document.getElementById('new-todo');
   $input.value = '';
 })
 
 store.subscribe(handleChange);
+
 render();
 
   }
@@ -106,8 +124,16 @@ render();
   function handleChange(){
     render();
   }
+
 function render(){
-  const todos = store.getState().todos;
+  const state = store.getState();
+  let todos = state.todos;
+  const filters = state.filters;
+  console.log(filters);
+  
+  if( filters === 'Activa' ){
+    todos = todos.filter(todo => todo.completed === false);
+  }
   renderTodos(todos)
 }
 
