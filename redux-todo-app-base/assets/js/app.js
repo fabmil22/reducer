@@ -47,14 +47,20 @@
   const reducer = ( state , action) => {
     switch (action.type) {
       case 'ADD_TASK':
-        return [...state , action.payload ];
+        return {
+          ...state,
+          todos: [...state.todos , action.payload ]
+        }
         break;
       case 'DELETE_TASK':
       const id = action.payload.id;
      
-        return  state.filter(
-          item => { return item.id !== id}
-        )
+        return  {
+          ...state,
+          todos:state.filter(
+            item => { return item.id !== id}
+          )
+        } 
         break;
       case 'EDIT_TASK':
         break;  
@@ -69,7 +75,7 @@
 //iniciando el estado
 store = createStore(
   reducer,
-  initialState.todos,
+  initialState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
@@ -77,7 +83,6 @@ const $form = document.getElementById('form');
 $form.addEventListener('submit' , (event) => {
   event.preventDefault();
   const data = new FormData($form);
-  console.log(data.get('text'));
 
    const action = actionAdd({
       id: 33,
@@ -102,7 +107,7 @@ render();
     render();
   }
 function render(){
-  const todos = store.getState();
+  const todos = store.getState().todos;
   renderTodos(todos)
 }
 
